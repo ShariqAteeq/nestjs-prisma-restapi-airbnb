@@ -1,6 +1,6 @@
 import { Status } from './../../common/constants';
 import { PrismaService } from './prisma.service';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { SignUpDto } from 'src/common/dto';
 import * as bcrypt from 'bcrypt';
@@ -13,12 +13,20 @@ export class UsersService {
   }
 
   async createUser(payload: SignUpDto): Promise<User> {
-    return await this.prismaService.user.create({
+
+    const user = await this.getUserByEmail(payload["email"]);
+    if(user) {
+      throw new HttpException('User already exist with this email', HttpStatus.BAD_REQUEST);
+    }
+
+    const createdUser = await this.prismaService.user.create({
       data: {
         ...payload,
         password: await bcrypt.hash(payload['password'], 10),
         status: Status.ACTIVE,
       },
     });
+    console.log("user", createdUser);
+    return createdUser;
   }
 }

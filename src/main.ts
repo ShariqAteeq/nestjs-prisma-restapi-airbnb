@@ -6,6 +6,10 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  (BigInt.prototype as any).toJSON = function (): number {
+    return Number(this);
+  };;
+
   const config = new DocumentBuilder()
     .setTitle('Airbnb Clone')
     .setDescription('The API for DEV only Airbnb Server')
