@@ -1,10 +1,11 @@
+import { Role } from './constants';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDefined, IsEmail } from 'class-validator';
+import { IsDefined, IsEmail, IsEnum } from 'class-validator';
 
 export class SignUpDto {
   @IsDefined()
   @ApiProperty()
-  name: string;
+  fullname: string;
 
   @IsDefined()
   @IsEmail()
@@ -13,5 +14,16 @@ export class SignUpDto {
 
   @IsDefined()
   @ApiProperty()
+  password: string;
+
+  @IsEnum(Role)
+  @IsDefined()
+  role: Role;
+}
+
+export class LoginDto {
+  @IsDefined()
+  email: string;
+  @IsDefined()
   password: string;
 }

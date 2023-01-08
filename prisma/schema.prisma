@@ -9,3 +9,24 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        BigInt    @id @default(autoincrement())
+  email     String    @unique
+  password  String?
+  fullname  String?
+  role      Role?     @default(USER)
+  status    Status?   @default(ACTIVE)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+enum Role {
+  USER
+  ADMIN
+}
