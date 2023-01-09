@@ -19,11 +19,10 @@ export class AuthService {
 
   async validateUser(payload: LoginDto): Promise<User> {
     const user = await this.usersService.getUserByEmail(payload['email']);
-    console.log('user');
     if (!user) {
       throw new HttpException(E_USER_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
-    if (await !bcrypt.compare(payload['password'], user['password'])) {
+    if (!bcrypt.compareSync(payload['password'], user['password'])) {
       throw new HttpException('Incorrect Password', HttpStatus.BAD_REQUEST);
     }
     return user;
