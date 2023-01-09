@@ -12,11 +12,17 @@ export class UsersService {
     return await this.prismaService.user.findUnique({ where: { email } });
   }
 
-  async createUser(payload: SignUpDto): Promise<User> {
+  async getUserById(id: number): Promise<User | undefined> {
+    return await this.prismaService.user.findUnique({ where: { id } });
+  }
 
-    const user = await this.getUserByEmail(payload["email"]);
-    if(user) {
-      throw new HttpException('User already exist with this email', HttpStatus.BAD_REQUEST);
+  async createUser(payload: SignUpDto): Promise<User> {
+    const user = await this.getUserByEmail(payload['email']);
+    if (user) {
+      throw new HttpException(
+        'User already exist with this email',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const createdUser = await this.prismaService.user.create({
@@ -26,7 +32,6 @@ export class UsersService {
         status: Status.ACTIVE,
       },
     });
-    console.log("user", createdUser);
     return createdUser;
   }
 }
