@@ -22,49 +22,11 @@ model User {
 }
 
 model Room {
-  id        BigInt    @id @default(autoincrement())
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-}
-
-model RoomKindStep {
-  id             BigInt    @id @default(autoincrement())
-  roomId         BigInt
-  roomStepType   String?
-  kindOfProperty String?
-  kindOfPlace    String?
-  totalRooms     String?
-  amenities      String[]
-  sharedSpaces   String[]
-  noOfGuests     Int?
-  noOfBedrooms   Int?
-  noOfBeds       Int?
-  noOfBathrooms  Int?
-  country        String?
-  state          String?
-  city           String?
-  line1          String?
-  line2          String?
-  zipcode        String?
-  isPersonalHome Boolean?
-  createdAt      DateTime? @default(now())
-  updatedAt      DateTime? @updatedAt
-}
-
-model RoomOverviewStep {
-  id           BigInt    @id @default(autoincrement())
-  roomId       BigInt
-  images       String[]
-  title        String
-  description  String
-  roomStepType String?
-  createdAt    DateTime? @default(now())
-  updatedAt    DateTime? @updatedAt
-}
-
-model RoomRuleStep {
-  id                 BigInt    @id @default(autoincrement())
-  roomId             BigInt
+  id                 BigInt        @id @default(autoincrement())
+  images             String[]
+  title              String
+  description        String
+  status             String
   guestRules         Json?
   checkinTime        String?
   checkoutTime       String?
@@ -74,13 +36,40 @@ model RoomRuleStep {
   cleaningFee        Int?
   weeklyDiscount     String?
   monthlyDiscount    String?
-  availableDate      String?
+  startDate          DateTime?
+  endDate            DateTime?
   minStay            Int?
   maxStay            Int?
   bookingType        String?
   roomStepType       String?
-  createdAt          DateTime? @default(now())
-  updatedAt          DateTime? @updatedAt
+  isPersonalHome     Boolean?
+  kindOfProperty     String?
+  kindOfPlace        String?
+  totalRooms         String?
+  amenities          String[]
+  sharedSpaces       String[]
+  noOfGuests         Int?
+  noOfBedrooms       Int?
+  noOfBeds           Int?
+  noOfBathrooms      Int?
+  createdAt          DateTime?     @default(now())
+  updatedAt          DateTime?     @updatedAt
+  location           RoomLocation?
+}
+
+model RoomLocation {
+  id        BigInt    @id @default(autoincrement())
+  room      Room      @relation(fields: [roomId], references: [id])
+  roomId    BigInt    @unique
+  country   String?
+  state     String?
+  city      String?
+  address   String?
+  lat       Float?
+  lng       Float?
+  zipcode   String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
 }
 
 enum Status {
@@ -91,4 +80,10 @@ enum Status {
 enum Role {
   USER
   ADMIN
+}
+
+enum RoomStepType {
+  ROOM_KIND
+  ROOM_RULE
+  ROOM_OVERVIEW
 }
