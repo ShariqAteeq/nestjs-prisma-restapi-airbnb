@@ -17,6 +17,7 @@ model User {
   fullname  String?
   role      Role?     @default(USER)
   status    Status?   @default(ACTIVE)
+  rooms     Room[]
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 }
@@ -55,6 +56,8 @@ model Room {
   createdAt          DateTime?     @default(now())
   updatedAt          DateTime?     @updatedAt
   location           RoomLocation?
+  user               User?         @relation(fields: [userId], references: [id])
+  userId             BigInt?
 }
 
 model RoomLocation {
