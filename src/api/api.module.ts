@@ -5,10 +5,11 @@ import { Module, forwardRef } from '@nestjs/common';
 import { AuthModule } from 'src/auth/auth.module';
 import { UserController } from './controllers/user.controller';
 import { RoomService } from './services/room.service';
+import { CloudinaryService } from './services/cloudinary.service';
 
 @Module({
   imports: [forwardRef(() => AuthModule)],
   controllers: [UserController, RoomController],
-  providers: [UsersService, PrismaService, RoomService],
+  providers: [UsersService, PrismaService, RoomService, CloudinaryService],
 })
 export class ApiModule {}
