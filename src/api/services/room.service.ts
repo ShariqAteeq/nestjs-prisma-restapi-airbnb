@@ -46,6 +46,12 @@ export class RoomService {
     });
   }
 
+  async getroom(id: string): Promise<Room> {
+    return await this.prismaService.room.findUniqueOrThrow({
+      where: { id: +id },
+    });
+  }
+
   async listAllRooms(): Promise<Room[]> {
     return await this.prismaService.room.findMany({
       include: {

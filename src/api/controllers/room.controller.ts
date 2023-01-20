@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import {
+  Param,
   Post,
   Req,
   UploadedFiles,
@@ -36,6 +37,11 @@ export class RoomController {
   @Get('/my-rooms')
   async listMyRooms(@Req() req): Promise<Room[]> {
     return await this.roomService.listMyRooms(req.user);
+  }
+
+  @Get(':id')
+  async room(@Param('id') id: string): Promise<Room> {
+    return await this.roomService.getroom(id);
   }
 
   @Get('/all-rooms')
