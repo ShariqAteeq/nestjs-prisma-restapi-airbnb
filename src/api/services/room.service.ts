@@ -10,9 +10,9 @@ export class RoomService {
   constructor(
     private prismaService: PrismaService,
     private cloudinaryService: CloudinaryService,
-  ) {}
+  ) { }
 
-  async addRoom(addRoomDto: AddRoomDto, user: User, files): Promise<Room> {
+  async addRoom(addRoomDto: AddRoomDto, user: User, files = []): Promise<Room> {
     const { id, ...rest } = addRoomDto;
     const imagesArr = [];
     console.log('files', files);
@@ -25,7 +25,7 @@ export class RoomService {
     console.log('Res', res);
     return await this.prismaService.room.upsert({
       where: {
-        id: +id ?? 0,
+        id: id ? id : 0,
       },
       update: {
         ...rest,
